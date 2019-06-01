@@ -7,7 +7,7 @@ namespace SteamGiveawaysBot.Launcher
 {
     public static class ApplicationUpdater
     {
-        const string LatestVersionFileNameFormat = "steam_giveaways_bot_{0}_{1}.zip";
+        const string LatestVersionFileNameFormat = "steam-giveaways-bot_{0}_{1}.zip";
         const string LatestVersionArchiveUrlFormat = "http://hori.go.ro/sgb/{0}";
         const string LatestVersionStringUrl = "http://hori.go.ro/sgb/version";
 
