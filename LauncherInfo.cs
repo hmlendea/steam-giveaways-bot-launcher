@@ -10,7 +10,7 @@ namespace SteamGiveawaysBot.Launcher
 
         static string rootDirectory;
 
-        public static string Name = $"{nameof(SteamGiveawaysBot)}.{nameof(Launcher)}";
+        public static string Name = $"{nameof(SteamGiveawaysBot)}.{nameof(SteamGiveawaysBot.Launcher)}";
 
         /// <summary>
         /// The application directory.
