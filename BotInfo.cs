@@ -8,94 +8,20 @@ namespace SteamGiveawaysBot.Launcher
     {
         const string AppSettingsFileName = "appsettings.json";
         const string VersionFileName = "version.txt";
-        const string PlatformFileName = "platform.txt";
-        const string SgbDirectoryName = "sgb_app";
+        const string RootDirectoryName = "sgb_app";
 
         public static string Name = nameof(SteamGiveawaysBot);
 
-        public static string RootDirectory => Path.Combine(LauncherInfo.RootDirectory, SgbDirectoryName);
-
-        public static string Version
-        {
-            get => GetFileValue(VersionFileName);
-            set => WriteFileContent(VersionFileName, value);
-        }
-
-        public static string Platform
-        {
-            get
-            {
-                string platform = GetPlatformFromDepsFile();
-
-                if (string.IsNullOrWhiteSpace(platform))
-                {
-                    platform = GetFileValue(PlatformFileName, "linux-x64");
-                }
-
-                return platform;
-            }
-        }
+        public static string RootDirectory => Path.Combine(LauncherInfo.RootDirectory, RootDirectoryName);
 
         public static string AppSettingsFilePath => Path.Combine(RootDirectory, AppSettingsFileName);
 
-        static string GetFileValue(string fileName)
-            => GetFileValue(fileName, null);
+        public static string VersionFilePath => Path.Combine(RootDirectory, VersionFileName);
 
-        static string GetFileValue(string fileName, string defaultValue)
+        public static string Version
         {
-            string fileContent = GetFileContent(fileName);
-            string firstValue = string.Empty;
-
-            foreach (char c in fileContent ?? string.Empty)
-            {
-                if (char.IsWhiteSpace(c) ||
-                    c == '\r' ||
-                    c == '\n')
-                {
-                    break;
-                }
-
-                firstValue += c;
-            }
-
-            if (string.IsNullOrWhiteSpace(firstValue))
-            {
-                return defaultValue;
-            }
-
-            return firstValue;
-        }
-
-        static string GetFileContent(string fileName)
-        {
-            string filePath = Path.Combine(RootDirectory, fileName);
-
-            if (File.Exists(filePath))
-            {
-                return File.ReadAllText(filePath);
-            }
-
-            return null;
-        }
-
-        static void WriteFileContent(string fileName, string fileContent)
-        {
-            string filePath = Path.Combine(RootDirectory, fileName);
-            File.WriteAllText(filePath, fileContent);
-        }
-
-        static string GetPlatformFromDepsFile()
-        {
-            string depsFilePath = Path.Combine(RootDirectory, $"{Name}.deps.json");
-            string line = File.ReadAllLines(depsFilePath)[2];
-            string[] split = line.Split('/');
-
-            if (split.Length != 2)
-            {
-                return null;
-            }
-
-            return split[1].Substring(0, split[1].Length - 2);
+            get => FileHandler.ReadValue(VersionFilePath);
+            set => FileHandler.WriteContent(VersionFilePath, value);
         }
     }
 }

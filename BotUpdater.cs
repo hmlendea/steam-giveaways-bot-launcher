@@ -47,7 +47,7 @@ namespace SteamGiveawaysBot.Launcher
         {
             string archivePath = Path.Combine(LauncherInfo.RootDirectory, "sgb.zip");
             
-            DownloadSgb(archivePath, version, BotInfo.Platform);
+            DownloadSgb(archivePath, version, LauncherInfo.Platform);
 
             if (Directory.Exists(BotInfo.RootDirectory))
             {

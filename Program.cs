@@ -66,7 +66,7 @@ namespace SteamGiveawaysBot.Launcher
 
         static void EnsureExecutionPermissions(string exePath)
         {
-            if (BotInfo.Platform.Contains("linux"))
+            if (LauncherInfo.Platform.Contains("linux"))
             {
                 EnsureExecutionPermissionsOnLinux(exePath);
             }
