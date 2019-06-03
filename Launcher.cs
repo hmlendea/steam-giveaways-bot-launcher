@@ -78,11 +78,12 @@ namespace SteamGiveawaysBot.Launcher
             if (exePath.EndsWith(".dll"))
             {
                 app.StartInfo.FileName = "dotnet";
-                app.StartInfo.Arguments = $"\"{exePath}\"";
+                app.StartInfo.Arguments = $"\"{exePath}\" --username {settings.Username} --ssk {settings.SharedSecretKey}";
             }
             else
             {
                 app.StartInfo.FileName = exePath;
+                app.StartInfo.Arguments = $"--username {settings.Username} --ssk {settings.SharedSecretKey}";
             }
 
             app.Start();

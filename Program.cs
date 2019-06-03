@@ -20,18 +20,16 @@ namespace SteamGiveawaysBot.Launcher
             ApplicationSettings settings = GetSettings(args);
             Launcher launcher = new Launcher(settings);
             BotUpdater updater = new BotUpdater(settings);
-            BotConfigurator configurator = new BotConfigurator(settings);
 
             updater.CheckForUpdates();
-            configurator.ApplyTextReplacements();
             launcher.LaunchBot();
         }
 
         static ApplicationSettings GetSettings(string[] args)
         {
             ApplicationSettings settings = new ApplicationSettings();
-            settings.BotUsername = CliArgumentsReader.GetOptionValue(args, UsernameOptions);
-            settings.BotSharedSecretKey = CliArgumentsReader.GetOptionValue(args, SecretKeyOptions);
+            settings.Username = CliArgumentsReader.GetOptionValue(args, UsernameOptions);
+            settings.SharedSecretKey = CliArgumentsReader.GetOptionValue(args, SecretKeyOptions);
 
             if (CliArgumentsReader.HasOption(args, PlatformOptions))
             {
