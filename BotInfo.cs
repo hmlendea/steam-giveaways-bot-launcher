@@ -16,7 +16,7 @@ namespace SteamGiveawaysBot.Launcher
 
         public static string AppSettingsFilePath => Path.Combine(RootDirectory, AppSettingsFileName);
 
-        public static string VersionFilePath => Path.Combine(RootDirectory, VersionFileName);
+        public static string VersionFilePath => Path.Combine(LauncherInfo.RootDirectory, VersionFileName);
 
         public static string Version
         {

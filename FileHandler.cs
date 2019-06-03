@@ -28,7 +28,7 @@ namespace SteamGiveawaysBot.Launcher
 
             if (string.IsNullOrWhiteSpace(firstValue))
             {
-                return defaultValue.ToString();
+                return defaultValue?.ToString();
             }
 
             return firstValue;
