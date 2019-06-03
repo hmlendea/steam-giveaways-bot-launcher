@@ -13,7 +13,7 @@ namespace SteamGiveawaysBot.Launcher
 
         public static void CheckForUpdates()
         {
-            Console.WriteLine("Checking for updates");
+            Console.WriteLine("Checking for updates...");
 
             try
             {
@@ -67,7 +67,7 @@ namespace SteamGiveawaysBot.Launcher
             string archiveName = string.Format(LatestVersionFileNameFormat, version, platform);
             string url = string.Format(LatestVersionArchiveUrlFormat, archiveName);
             
-            Console.WriteLine($"Downloading \"{archiveName}\"");
+            Console.WriteLine($"Downloading version {version}...");
 
             using (WebClient client = new WebClient())
             {
