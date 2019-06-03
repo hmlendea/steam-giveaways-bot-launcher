@@ -1,3 +1,0 @@
-[[BOT_SERVER_URL]]=serverUrl
-[[BOT_USERNAME]]=botUser
-[[BOT_SECRET_KEY]]=botSsk

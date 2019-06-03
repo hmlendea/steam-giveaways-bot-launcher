@@ -1,42 +1,28 @@
 using System.Collections.Generic;
 using System.IO;
 
+using SteamGiveawaysBot.Launcher.Configuration;
+
 namespace SteamGiveawaysBot.Launcher
 {
-    public static class BotConfigurator
+    public sealed class BotConfigurator
     {
-        const string TextReplacementsFileName = "textreplacements.txt";
+        readonly ApplicationSettings settings;
 
-        public static void ApplyTextReplacements()
+        public BotConfigurator(ApplicationSettings settings)
         {
-            IDictionary<string, string> textReplacements = LoadTextReplacements();
-
-            string fileContent = File.ReadAllText(BotInfo.AppSettingsFilePath);
-
-            foreach (string placeholder in textReplacements.Keys)
-            {
-                fileContent = fileContent.Replace(placeholder, textReplacements[placeholder]);
-            }
-
-            File.WriteAllText(BotInfo.AppSettingsFilePath, fileContent);
+            this.settings = settings;
         }
 
-        static IDictionary<string, string> LoadTextReplacements()
+        public void ApplyTextReplacements()
         {
-            string filePath = Path.Combine(LauncherInfo.RootDirectory, TextReplacementsFileName);
+            string fileContent = File.ReadAllText(BotInfo.AppSettingsFilePath);
+            
+            fileContent.Replace("[[BOT_SERVER_URL]]", "http://hori.go.ro:5123");
+            fileContent.Replace("[[BOT_USERNAME]]", settings.BotUsername);
+            fileContent.Replace("[[BOT_SECRET_KEY]]", settings.BotSharedSecretKey);
 
-            IDictionary<string, string> textReplacements = new Dictionary<string, string>();
-
-            foreach (string line in File.ReadAllLines(filePath))
-            {
-                int splitIndex = line.IndexOf('=');
-                string placeholder = line.Substring(0, splitIndex);
-                string value = line.Substring(splitIndex + 1);
-
-                textReplacements.Add(placeholder, value);
-            }
-
-            return textReplacements;
+            File.WriteAllText(BotInfo.AppSettingsFilePath, fileContent);
         }
     }
 }

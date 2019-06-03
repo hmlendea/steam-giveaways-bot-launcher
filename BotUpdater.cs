@@ -3,26 +3,35 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 
+using SteamGiveawaysBot.Launcher.Configuration;
+
 namespace SteamGiveawaysBot.Launcher
 {
-    public static class BotUpdater
+    public sealed class BotUpdater
     {
         const string LatestVersionFileNameFormat = "steam-giveaways-bot_{0}_{1}.zip";
         const string LatestVersionArchiveUrlFormat = "http://hori.go.ro/sgb/{0}";
         const string LatestVersionStringUrl = "http://hori.go.ro/sgb/version";
 
-        public static void CheckForUpdates()
+        readonly ApplicationSettings settings;
+
+        public BotUpdater(ApplicationSettings settings)
         {
-            Console.WriteLine("Checking for updates...");
+            this.settings = settings;
+        }
+
+        public void CheckForUpdates()
+        {
+            Console.WriteLine("Checking for updates ...");
 
             try
             {
-                string latestVersion = BotUpdater.GetLatestVersionString();
+                string latestVersion = GetLatestVersionString();
 
                 if (!Directory.Exists(BotInfo.RootDirectory) ||
                     string.Compare(latestVersion, BotInfo.Version) > 0)
                 {
-                    BotUpdater.UpdateApplication(latestVersion);
+                    UpdateApplication(latestVersion);
                 }
             }
             catch (Exception ex)
@@ -31,23 +40,11 @@ namespace SteamGiveawaysBot.Launcher
             }
         }
 
-        public static string GetLatestVersionString()
-        {
-            using (WebClient client = new WebClient())
-            {
-                return client
-                    .DownloadString(LatestVersionStringUrl)
-                    .Replace(" ", "")
-                    .Replace("\r", "")
-                    .Replace("\n", "");;
-            }
-        }
-
-        public static void UpdateApplication(string version)
+        public void UpdateApplication(string version)
         {
             string archivePath = Path.Combine(LauncherInfo.RootDirectory, "sgb.zip");
             
-            DownloadSgb(archivePath, version, LauncherInfo.Platform);
+            DownloadSgb(archivePath, version, settings.Platform);
 
             if (Directory.Exists(BotInfo.RootDirectory))
             {
@@ -62,12 +59,24 @@ namespace SteamGiveawaysBot.Launcher
             BotInfo.Version = version;
         }
 
-        public static void DownloadSgb(string filePath, string version, string platform)
+        string GetLatestVersionString()
+        {
+            using (WebClient client = new WebClient())
+            {
+                return client
+                    .DownloadString(LatestVersionStringUrl)
+                    .Replace(" ", "")
+                    .Replace("\r", "")
+                    .Replace("\n", "");;
+            }
+        }
+
+        void DownloadSgb(string filePath, string version, string platform)
         {
             string archiveName = string.Format(LatestVersionFileNameFormat, version, platform);
             string url = string.Format(LatestVersionArchiveUrlFormat, archiveName);
             
-            Console.WriteLine($"Downloading version {version}...");
+            Console.WriteLine($"Downloading version {version} ...");
 
             using (WebClient client = new WebClient())
             {
