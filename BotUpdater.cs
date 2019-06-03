@@ -5,7 +5,7 @@ using System.Net;
 
 namespace SteamGiveawaysBot.Launcher
 {
-    public static class ApplicationUpdater
+    public static class BotUpdater
     {
         const string LatestVersionFileNameFormat = "steam-giveaways-bot_{0}_{1}.zip";
         const string LatestVersionArchiveUrlFormat = "http://hori.go.ro/sgb/{0}";
@@ -17,12 +17,12 @@ namespace SteamGiveawaysBot.Launcher
 
             try
             {
-                string latestVersion = ApplicationUpdater.GetLatestVersionString();
+                string latestVersion = BotUpdater.GetLatestVersionString();
 
-                if (!Directory.Exists(ApplicationInfo.ApplicationDirectory) ||
-                    string.Compare(latestVersion, ApplicationInfo.ApplicationVersion) > 0)
+                if (!Directory.Exists(BotInfo.RootDirectory) ||
+                    string.Compare(latestVersion, BotInfo.Version) > 0)
                 {
-                    ApplicationUpdater.UpdateApplication(latestVersion);
+                    BotUpdater.UpdateApplication(latestVersion);
                 }
             }
             catch (Exception ex)
@@ -45,21 +45,21 @@ namespace SteamGiveawaysBot.Launcher
 
         public static void UpdateApplication(string version)
         {
-            string archivePath = Path.Combine(ApplicationInfo.LauncherDirectory, "sgb.zip");
+            string archivePath = Path.Combine(LauncherInfo.RootDirectory, "sgb.zip");
             
-            DownloadSgb(archivePath, version, ApplicationInfo.Platform);
+            DownloadSgb(archivePath, version, BotInfo.Platform);
 
-            if (Directory.Exists(ApplicationInfo.ApplicationDirectory))
+            if (Directory.Exists(BotInfo.RootDirectory))
             {
-                Directory.Delete(ApplicationInfo.ApplicationDirectory, true);
+                Directory.Delete(BotInfo.RootDirectory, true);
             }
 
-            Directory.CreateDirectory(ApplicationInfo.ApplicationDirectory);
+            Directory.CreateDirectory(BotInfo.RootDirectory);
 
-            ZipFile.ExtractToDirectory(archivePath, ApplicationInfo.ApplicationDirectory);
+            ZipFile.ExtractToDirectory(archivePath, BotInfo.RootDirectory);
 
             File.Delete(archivePath);
-            ApplicationInfo.ApplicationVersion = version;
+            BotInfo.Version = version;
         }
 
         public static void DownloadSgb(string filePath, string version, string platform)

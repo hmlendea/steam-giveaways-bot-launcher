@@ -4,37 +4,18 @@ using System.Runtime;
 
 namespace SteamGiveawaysBot.Launcher
 {
-    public static class ApplicationInfo
+    public static class BotInfo
     {
+        const string AppSettingsFileName = "appsettings.json";
         const string VersionFileName = "version.txt";
         const string PlatformFileName = "platform.txt";
         const string SgbDirectoryName = "sgb_app";
 
-        static string rootDirectory;
+        public static string Name = nameof(SteamGiveawaysBot);
 
-        public static string ApplicationName = nameof(SteamGiveawaysBot);
+        public static string RootDirectory => Path.Combine(LauncherInfo.RootDirectory, SgbDirectoryName);
 
-        public static string LauncherName = $"{ApplicationName}.{nameof(Launcher)}";
-
-        /// <summary>
-        /// The application directory.
-        /// </summary>
-        public static string LauncherDirectory
-        {
-            get
-            {
-                if (rootDirectory == null)
-                {
-                    rootDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                }
-
-                return rootDirectory;
-            }
-        }
-
-        public static string ApplicationDirectory => Path.Combine(LauncherDirectory, SgbDirectoryName);
-
-        public static string ApplicationVersion
+        public static string Version
         {
             get => GetFileValue(VersionFileName);
             set => WriteFileContent(VersionFileName, value);
@@ -54,6 +35,8 @@ namespace SteamGiveawaysBot.Launcher
                 return platform;
             }
         }
+
+        public static string AppSettingsFilePath => Path.Combine(RootDirectory, AppSettingsFileName);
 
         static string GetFileValue(string fileName)
             => GetFileValue(fileName, null);
@@ -85,7 +68,7 @@ namespace SteamGiveawaysBot.Launcher
 
         static string GetFileContent(string fileName)
         {
-            string filePath = Path.Combine(LauncherDirectory, fileName);
+            string filePath = Path.Combine(RootDirectory, fileName);
 
             if (File.Exists(filePath))
             {
@@ -97,22 +80,22 @@ namespace SteamGiveawaysBot.Launcher
 
         static void WriteFileContent(string fileName, string fileContent)
         {
-            string filePath = Path.Combine(LauncherDirectory, fileName);
+            string filePath = Path.Combine(RootDirectory, fileName);
             File.WriteAllText(filePath, fileContent);
         }
 
         static string GetPlatformFromDepsFile()
         {
-                string depsFilePath = Path.Combine(LauncherDirectory, $"{LauncherName}.deps.json");
-                string line = File.ReadAllLines(depsFilePath)[2];
-                string[] split = line.Split('/');
+            string depsFilePath = Path.Combine(RootDirectory, $"{Name}.deps.json");
+            string line = File.ReadAllLines(depsFilePath)[2];
+            string[] split = line.Split('/');
 
-                if (split.Length != 2)
-                {
-                    return null;
-                }
+            if (split.Length != 2)
+            {
+                return null;
+            }
 
-                return split[1].Substring(0, split[1].Length - 2);
+            return split[1].Substring(0, split[1].Length - 2);
         }
     }
 }

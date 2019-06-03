@@ -3,28 +3,27 @@ using System.IO;
 
 namespace SteamGiveawaysBot.Launcher
 {
-    public static class ApplicationConfigurator
+    public static class BotConfigurator
     {
         const string TextReplacementsFileName = "textreplacements.txt";
 
         public static void ApplyTextReplacements()
         {
-            string appSettingsFilePath = Path.Combine(ApplicationInfo.ApplicationDirectory, "appsettings.json");
             IDictionary<string, string> textReplacements = LoadTextReplacements();
 
-            string fileContent = File.ReadAllText(appSettingsFilePath);
+            string fileContent = File.ReadAllText(BotInfo.AppSettingsFilePath);
 
             foreach (string placeholder in textReplacements.Keys)
             {
                 fileContent = fileContent.Replace(placeholder, textReplacements[placeholder]);
             }
 
-            File.WriteAllText(appSettingsFilePath, fileContent);
+            File.WriteAllText(BotInfo.AppSettingsFilePath, fileContent);
         }
 
         static IDictionary<string, string> LoadTextReplacements()
         {
-            string filePath = Path.Combine(ApplicationInfo.LauncherDirectory, TextReplacementsFileName);
+            string filePath = Path.Combine(LauncherInfo.RootDirectory, TextReplacementsFileName);
 
             IDictionary<string, string> textReplacements = new Dictionary<string, string>();
 

@@ -14,8 +14,8 @@ namespace SteamGiveawaysBot.Launcher
 
         static void Main(string[] args)
         {
-            ApplicationUpdater.CheckForUpdates();
-            ApplicationConfigurator.ApplyTextReplacements();
+            BotUpdater.CheckForUpdates();
+            BotConfigurator.ApplyTextReplacements();
 
             string appExePath = GetApplicationExecutablePath();
 
@@ -32,7 +32,7 @@ namespace SteamGiveawaysBot.Launcher
         static void LaunchApplication(string appExePath)
         {
             Process app = new Process();
-            app.StartInfo.WorkingDirectory = ApplicationInfo.LauncherDirectory;
+            app.StartInfo.WorkingDirectory = LauncherInfo.RootDirectory;
             app.StartInfo.CreateNoWindow = true;
 
             if (appExePath.EndsWith(".dll"))
@@ -53,11 +53,11 @@ namespace SteamGiveawaysBot.Launcher
         {
             foreach (string fileNameCandidate in fileNameCandidates)
             {
-                string filePath = Path.Combine(ApplicationInfo.ApplicationDirectory, fileNameCandidate);
+                string exePath = Path.Combine(BotInfo.RootDirectory, fileNameCandidate);
 
-                if (File.Exists(filePath))
+                if (File.Exists(exePath))
                 {
-                    return filePath;
+                    return exePath;
                 }
             }
 
@@ -66,7 +66,7 @@ namespace SteamGiveawaysBot.Launcher
 
         static void EnsureExecutionPermissions(string exePath)
         {
-            if (ApplicationInfo.Platform.Contains("linux"))
+            if (BotInfo.Platform.Contains("linux"))
             {
                 EnsureExecutionPermissionsOnLinux(exePath);
             }
