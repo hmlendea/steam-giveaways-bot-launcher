@@ -1,18 +1,16 @@
 #!/bin/bash
 
-APP_NAME="steam-giveaways-bot-launcher"
-VERSION_MAJOR=$(date +"%y.%j")
-VERSION_MINOR="$1"
+APP_NAME=$(git remote -v | tail -1 | sed 's|.*/\([^/]*\)\.git.*|\1|')
+VERSION="$1"
 RELEASE_DIR_RELATIVE="bin/Release"
 PUBLISH_DIR_RELATIVE="${RELEASE_DIR_RELATIVE}/publish-script-output"
 RELEASE_DIR="$(pwd)/$RELEASE_DIR_RELATIVE"
 PUBLISH_DIR="$(pwd)/$PUBLISH_DIR_RELATIVE"
 
-if [ -z $VERSION_MINOR ]; then
-    VERSION_MINOR="0"
+if [ -z "$VERSION" ]; then
+    echo "ERROR: Please specify a version"
+    exit 1
 fi
-
-VERSION="$VERSION_MAJOR.$VERSION_MINOR"
 
 function package {
     ARCH="$1"
@@ -47,21 +45,23 @@ function prepare {
 function cleanup {
     echo "Removing the temporary NuGet packages"
     dotnet remove package Microsoft.Packaging.Tools.Trimming
-    #dotnet remove package ILLink.Tasks    
+    #dotnet remove package ILLink.Task
 
     echo "Cleaning build output"
     rm -rf "$PUBLISH_DIR"
 }
 
+function build-release {
+    dotnet-pub $1
+    package $1
+}
+
 prepare
 
-dotnet-pub win-x64
-package win-x64
-
-dotnet-pub linux-x64
-package linux-x64
-
-dotnet-pub linux-arm
-package linux-arm
+build-release win-x64
+build-release osx-x64
+build-release linux-x64
+build-release linux-arm
+build-release linux-arm64
 
 cleanup
