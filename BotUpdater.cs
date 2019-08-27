@@ -63,11 +63,18 @@ namespace SteamGiveawaysBot.Launcher
         {
             using (WebClient client = new WebClient())
             {
-                return client
+                string retrievedValue = client
                     .DownloadString(LatestVersionStringUrl)
                     .Replace(" ", "")
                     .Replace("\r", "")
-                    .Replace("\n", "");;
+                    .Replace("\n", "");
+                
+                if (retrievedValue.StartsWith('v'))
+                {
+                    return retrievedValue.Substring(1);
+                }
+
+                return retrievedValue;
             }
         }
 
