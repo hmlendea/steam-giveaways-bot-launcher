@@ -87,6 +87,12 @@ namespace SteamGiveawaysBot.Launcher
             }
 
             app.Start();
+
+            if (settings.Platform.StartsWith("win"))
+            {
+                return;
+            }
+            
             app.WaitForExit();
         }
     }
