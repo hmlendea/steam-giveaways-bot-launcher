@@ -10,8 +10,8 @@ namespace SteamGiveawaysBot.Launcher
     public sealed class BotUpdater
     {
         const string LatestVersionFileNameFormat = "steam-giveaways-bot_{0}_{1}.zip";
-        const string LatestVersionArchiveUrlFormat = "http://hmlendea.go.ro/sgb/{0}";
-        const string LatestVersionStringUrl = "http://hmlendea.go.ro/sgb/version";
+        const string LatestVersionArchiveUrlFormat = "http://stayback.zapto.org/sgb/{0}";
+        const string LatestVersionStringUrl = "http://stayback.zapto.org/sgb/version";
 
         readonly ApplicationSettings settings;
 
