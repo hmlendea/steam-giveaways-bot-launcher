@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/hmlendea/steam-giveaways-bot-launcher.svg?branch=master)](https://travis-ci.com/hmlendea/steam-giveaways-bot-launcher)
+[![Build Status](https://github.com/hmlendea/steam-giveaways-bot-launcher/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hmlendea/steam-giveaways-bot-launcher/actions/workflows/dotnet.yml)
 
 # About
 
