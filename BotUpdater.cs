@@ -9,7 +9,7 @@ namespace SteamGiveawaysBot.Launcher
 {
     public sealed class BotUpdater(ApplicationSettings settings)
     {
-        const string BaseUrl = "https://hmlendea.go.ro/sgb";
+        const string BaseUrl = "https://sgbs.duckdns.org";
         const string LatestVersionFileNameFormat = "steam-giveaways-bot_{0}_{1}.zip";
         const string LatestVersionArchiveUrlFormat = $"{BaseUrl}/{{0}}";
         const string LatestVersionStringUrl = $"{BaseUrl}/version";
