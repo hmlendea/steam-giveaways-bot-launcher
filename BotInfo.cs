@@ -7,7 +7,7 @@ namespace SteamGiveawaysBot.Launcher
         const string VersionFileName = "version.txt";
         const string RootDirectoryName = "sgb_app";
 
-        public static string Name = nameof(SteamGiveawaysBot);
+        public static string Name => nameof(SteamGiveawaysBot);
 
         public static string RootDirectory => Path.Combine(LauncherInfo.RootDirectory, RootDirectoryName);
 
