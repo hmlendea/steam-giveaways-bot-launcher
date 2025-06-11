@@ -11,19 +11,19 @@ namespace SteamGiveawaysBot.Launcher
 {
     class Program
     {
-        static string[] UsernameOptions = { "-u", "--user", "--username" };
-        static string[] SecretKeyOptions = { "-k", "--ssk", "--key", "--secretkey", "--sharedsecretkey" };
-        static string[] PlatformOptions = { "-p", "--platform" };
-        
+        static readonly string[] UsernameOptions = ["-u", "--user", "--username"];
+        static readonly string[] SecretKeyOptions = ["-k", "--ssk", "--key", "--secretkey", "--sharedsecretkey"];
+        static readonly string[] PlatformOptions = ["-p", "--platform"];
+
         static TimeSpan ConnectionWaitTime => TimeSpan.FromSeconds(30);
-        
+
         static void Main(string[] args)
         {
             WaitForInternet();
 
             ApplicationSettings settings = GetSettings(args);
-            Launcher launcher = new Launcher(settings);
-            BotUpdater updater = new BotUpdater(settings);
+            Launcher launcher = new(settings);
+            BotUpdater updater = new(settings);
 
             updater.CheckForUpdates();
             launcher.LaunchBot();
@@ -31,7 +31,7 @@ namespace SteamGiveawaysBot.Launcher
 
         static ApplicationSettings GetSettings(string[] args)
         {
-            ApplicationSettings settings = new ApplicationSettings();
+            ApplicationSettings settings = new();
             settings.Username = CliArgumentsReader.GetOptionValue(args, UsernameOptions);
             settings.SharedSecretKey = CliArgumentsReader.GetOptionValue(args, SecretKeyOptions);
 
@@ -74,7 +74,7 @@ namespace SteamGiveawaysBot.Launcher
             {
                 try
                 {
-                    using (var client = new WebClient())
+                    using (WebClient client = new())
                     using (client.OpenRead("http://clients3.google.com/generate_204"))
                     {
                         isConnected = true;

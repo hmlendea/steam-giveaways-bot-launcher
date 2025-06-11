@@ -7,19 +7,14 @@ using SteamGiveawaysBot.Launcher.Configuration;
 
 namespace SteamGiveawaysBot.Launcher
 {
-    public sealed class BotUpdater
+    public sealed class BotUpdater(ApplicationSettings settings)
     {
         const string BaseUrl = "https://hmlendea.go.ro/sgb";
         const string LatestVersionFileNameFormat = "steam-giveaways-bot_{0}_{1}.zip";
         const string LatestVersionArchiveUrlFormat = $"{BaseUrl}/{{0}}";
         const string LatestVersionStringUrl = $"{BaseUrl}/version";
 
-        readonly ApplicationSettings settings;
-
-        public BotUpdater(ApplicationSettings settings)
-        {
-            this.settings = settings;
-        }
+        readonly ApplicationSettings settings = settings;
 
         public void CheckForUpdates()
         {
@@ -60,36 +55,33 @@ namespace SteamGiveawaysBot.Launcher
             BotInfo.Version = version;
         }
 
-        string GetLatestVersionString()
+        static string GetLatestVersionString()
         {
-            using (WebClient client = new WebClient())
+            using WebClient client = new();
+
+            string retrievedValue = client
+                .DownloadString(LatestVersionStringUrl)
+                .Replace(" ", "")
+                .Replace("\r", "")
+                .Replace("\n", "");
+
+            if (retrievedValue.StartsWith('v'))
             {
-                string retrievedValue = client
-                    .DownloadString(LatestVersionStringUrl)
-                    .Replace(" ", "")
-                    .Replace("\r", "")
-                    .Replace("\n", "");
-
-                if (retrievedValue.StartsWith('v'))
-                {
-                    return retrievedValue.Substring(1);
-                }
-
-                return retrievedValue;
+                return retrievedValue.Substring(1);
             }
+
+            return retrievedValue;
         }
 
-        void DownloadSgb(string filePath, string version, string platform)
+        static void DownloadSgb(string filePath, string version, string platform)
         {
             string archiveName = string.Format(LatestVersionFileNameFormat, version, platform);
             string url = string.Format(LatestVersionArchiveUrlFormat, archiveName);
 
             Console.WriteLine($"Downloading version {version} ...");
 
-            using (WebClient client = new WebClient())
-            {
-                client.DownloadFile(url, filePath);
-            }
+            using WebClient client = new();
+            client.DownloadFile(url, filePath);
         }
     }
 }

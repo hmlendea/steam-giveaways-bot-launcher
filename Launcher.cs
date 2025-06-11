@@ -6,19 +6,14 @@ using SteamGiveawaysBot.Launcher.Configuration;
 
 namespace SteamGiveawaysBot.Launcher
 {
-    public sealed class Launcher
+    public sealed class Launcher(ApplicationSettings settings)
     {
-        readonly string[] fileNameCandidates = {
+        readonly string[] fileNameCandidates = [
             $"{nameof(SteamGiveawaysBot)}",
             $"{nameof(SteamGiveawaysBot)}.exe",
-            $"{nameof(SteamGiveawaysBot)}.dll" };
-        
-        readonly ApplicationSettings settings;
+            $"{nameof(SteamGiveawaysBot)}.dll" ];
 
-        public Launcher(ApplicationSettings settings)
-        {
-            this.settings = settings;
-        }
+        readonly ApplicationSettings settings = settings;
 
         public void LaunchBot()
         {
@@ -29,7 +24,7 @@ namespace SteamGiveawaysBot.Launcher
                 Console.WriteLine("Executable not found");
                 return;
             }
-            
+
             EnsureExecutionPermissions(appExePath);
             RunBot(appExePath);
         }
@@ -57,9 +52,9 @@ namespace SteamGiveawaysBot.Launcher
             }
         }
 
-        public void EnsureExecutionPermissionsOnLinux(string exePath)
+        public static void EnsureExecutionPermissionsOnLinux(string exePath)
         {
-            Process chmod = new Process();
+            Process chmod = new();
             chmod.StartInfo.FileName = "chmod";
             chmod.StartInfo.Arguments = $"+x \"{exePath}\"";
             chmod.StartInfo.CreateNoWindow = true;
@@ -70,7 +65,7 @@ namespace SteamGiveawaysBot.Launcher
 
         void RunBot(string exePath)
         {
-            Process app = new Process();
+            Process app = new();
             app.StartInfo.WorkingDirectory = LauncherInfo.RootDirectory;
             app.StartInfo.CreateNoWindow = true;
 
@@ -91,7 +86,7 @@ namespace SteamGiveawaysBot.Launcher
             {
                 return;
             }
-            
+
             app.WaitForExit();
         }
     }

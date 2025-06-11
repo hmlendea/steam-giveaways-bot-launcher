@@ -4,9 +4,7 @@ namespace SteamGiveawaysBot.Launcher
 {
     public static class FileHandler
     {
-        public static string ReadValue(string path)
-            => ReadValue(path, null);
-
+        public static string ReadValue(string path) => ReadValue(path, null);
         public static string ReadValue(string path, object defaultValue)
         {
             string fileContent = ReadContent(path);
@@ -43,8 +41,6 @@ namespace SteamGiveawaysBot.Launcher
         }
 
         public static void WriteContent(string path, string content)
-        {
-            File.WriteAllText(path, content);
-        }
+            => File.WriteAllText(path, content);
     }
 }
